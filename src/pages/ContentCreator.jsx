@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Navbars from "../components/Navbars";
 import { Container, Button } from "react-bootstrap";
 import Cover from "../assets/images/Cover.png";
@@ -16,6 +16,7 @@ import Dur from "../assets/images/dur.png";
 export default function ContentCreator(props) {
   // Untuk mengambil id user yang login
   const [state] = useContext(UserContext);
+  const [search, setSearch] = useState("");
 
   // Mengambil database channel berdasarkan id
   const { id } = useParams();
@@ -23,12 +24,15 @@ export default function ContentCreator(props) {
     const response = await API.get(`/channel/${id}`);
     return response.data.data;
   });
+  console.log("ini getChannelByID : ", getChannelById)
 
   // Mengambil data subscription user yang login
   const { data: channelLogin, refetch: loginRefetch } = useQuery("channelLoginCache", async () => {
     const response = await API.get(`/channel/${state?.user.id}`);
     return response.data.data.subscription;
   });
+
+  console.log("ini channelLogin : ", channelLogin)
 
 
   let channel = [];
@@ -37,7 +41,7 @@ export default function ContentCreator(props) {
     if (subs.other_id == id) {
       channel.push(subs);
     }
-    console.log(subs)
+    console.log("ini subs : ",subs)
   });
 
   const [channelId] = channel;
@@ -79,7 +83,7 @@ export default function ContentCreator(props) {
 
   return (
     <>
-      <Navbars />
+      <Navbars setSearch={setSearch} search={search} />
       <Container className="margin-top-content" fluid>
         <img width="100%" style={{ height: "300px", objectFit: "cover" }} src={getChannelById?.cover ? getChannelById?.cover : Cover} alt="" />
         <Container className="mt-4">

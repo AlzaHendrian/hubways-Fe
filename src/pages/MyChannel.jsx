@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Navbars from "../components/Navbars";
 import { Container, Button } from "react-bootstrap";
 import Cover from "../assets/images/Cover.png";
@@ -13,6 +13,7 @@ import { UserContext } from "../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function MyChannel() {
+    const [search, setSearch] = useState("");
     const navigate = useNavigate();
     // Get Channel By Id
     const [state] = useContext(UserContext);
@@ -33,7 +34,7 @@ export default function MyChannel() {
 
     return (
         <>
-            <Navbars />
+            <Navbars setSearch={setSearch} search={search} />
             <Container className="margin-top-content" fluid>
                 <img width="100%" style={{ height: "300px", objectFit: "cover" }} src={getChannel?.cover ? getChannel?.cover : Cover} alt="" />
                 <Container className="mt-4">
